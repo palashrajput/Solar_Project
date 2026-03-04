@@ -1176,8 +1176,51 @@ body {
 }
 
 /* =============================================
-   SCROLL REVEAL
+   COMPREHENSIVE RESPONSIVE PATCHES
    ============================================= */
+
+/* --- Tablet (641px – 860px) --- */
+@media (max-width: 860px) {
+  .calc-wrapper { padding: 24px 16px 60px; }
+  .metrics-grid { padding: 20px 20px; gap: 10px; }
+  .cost-env-row { padding: 0 20px 20px; }
+  .charts-row { padding: 0 20px 20px; }
+  .locked-container { padding: 0 20px 20px; }
+  .results-header { padding: 20px 20px 0; }
+  .form-inner { padding: 24px 20px; }
+  .bottom-cta { margin: 0 20px 24px; }
+}
+
+/* --- Small mobile (≤ 420px) --- */
+@media (max-width: 420px) {
+  .calc-header h1 { font-size: 23px; }
+  .calc-header p { font-size: 14px; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); padding: 16px 12px; gap: 8px; }
+  .metric-value { font-size: 16px; }
+  .fin-tab { font-size: 11px; padding: 8px 4px; }
+  .fin-panel-title { font-size: 17px; }
+  .unlock-card { padding: 28px 16px; }
+  .charts-row { padding: 0 12px 16px; }
+  .cost-env-row { padding: 0 12px 16px; }
+  .locked-container { padding: 0 12px 16px; }
+  .results-header { padding: 16px 12px 0; }
+  .form-inner { padding: 16px 12px; }
+  .bottom-cta { margin: 0 12px 20px; padding: 20px 16px; }
+}
+
+/* --- Charts stack on tablet too --- */
+@media (max-width: 640px) {
+  .charts-row { grid-template-columns: 1fr; }
+  .cost-env-row { grid-template-columns: 1fr; }
+}
+
+/* --- Financing tab overflow on very small screens --- */
+@media (max-width: 360px) {
+  .financing-tabs-header { flex-direction: column; padding: 5px; }
+  .fin-tab { width: 100%; }
+}
+
+/* ============================================= */
 .reveal {
   opacity: 0;
   transform: translateY(20px);
@@ -1995,32 +2038,49 @@ function renderCharts(bill, gridFee, costNoSolar) {
       }
     }
   });
+  const monthlyGradientPlugin = {
+    id: 'monthlyGradient',
+    afterDraw(chart) {
+      const {ctx, chartArea, data, scales} = chart;
+      if (!chartArea) return;
+      const colors = [
+        { from: 'rgba(255,90,90,0.95)',  to: 'rgba(255,90,90,0.35)'  },
+        { from: 'rgba(6,214,160,0.95)',  to: 'rgba(6,214,160,0.35)'  }
+      ];
+      const meta = chart.getDatasetMeta(0);
+      meta.data.forEach((bar, i) => {
+        const {x, y, width, height, base} = bar.getProps(['x','y','width','height','base'], true);
+        const left  = Math.min(base, x);
+        const right = Math.max(base, x);
+        const grad = ctx.createLinearGradient(left, 0, right, 0);
+        grad.addColorStop(0, colors[i].from);
+        grad.addColorStop(1, colors[i].to);
+        ctx.save();
+        ctx.fillStyle = grad;
+        const radius = 10;
+        const bTop = y, bLeft = left, bRight = right, bBottom = y + height;
+        ctx.beginPath();
+        ctx.moveTo(bLeft, bTop);
+        ctx.lineTo(bRight - radius, bTop);
+        ctx.arcTo(bRight, bTop, bRight, bTop + radius, radius);
+        ctx.lineTo(bRight, bBottom - radius);
+        ctx.arcTo(bRight, bBottom, bRight - radius, bBottom, radius);
+        ctx.lineTo(bLeft, bBottom);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      });
+    }
+  };
+
   new Chart(document.getElementById('chartMonthly'), {
     type: 'bar',
+    plugins: [monthlyGradientPlugin],
     data: {
       labels: ['Before Solar', 'After Solar'],
       datasets: [{
         data: [bill, gridFee],
-        backgroundColor: [
-          (ctx) => {
-            const chart = ctx.chart;
-            const {ctx: c, chartArea} = chart;
-            if (!chartArea) return 'rgba(255,90,90,0.75)';
-            const grad = c.createLinearGradient(chartArea.left, 0, chartArea.right, 0);
-            grad.addColorStop(0, 'rgba(255,90,90,0.95)');
-            grad.addColorStop(1, 'rgba(255,90,90,0.45)');
-            return grad;
-          },
-          (ctx) => {
-            const chart = ctx.chart;
-            const {ctx: c, chartArea} = chart;
-            if (!chartArea) return 'rgba(6,214,160,0.75)';
-            const grad = c.createLinearGradient(chartArea.left, 0, chartArea.right, 0);
-            grad.addColorStop(0, 'rgba(6,214,160,0.95)');
-            grad.addColorStop(1, 'rgba(6,214,160,0.45)');
-            return grad;
-          }
-        ],
+        backgroundColor: 'transparent',
         borderRadius: { topRight: 10, bottomRight: 10, topLeft: 0, bottomLeft: 0 },
         borderSkipped: 'left',
         barThickness: 32,
@@ -2030,6 +2090,7 @@ function renderCharts(bill, gridFee, costNoSolar) {
       responsive: true,
       maintainAspectRatio: false,
       indexAxis: 'y',
+      animation: { onComplete: function() { this.draw(); } },
       plugins: {
         legend: { display: false },
         tooltip: {
