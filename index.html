@@ -240,6 +240,16 @@ nav{position:relative;z-index:10;display:flex;align-items:center;justify-content
   font-family:'Plus Jakarta Sans',sans-serif;line-height:1.5}
 
 /* ─── MATH SECTION ───────────────────────────────────────── */
+.math-input-wrap{display:flex;align-items:center;gap:16px;margin-bottom:32px;flex-wrap:wrap}
+.math-input-label{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:var(--text)}
+.math-input{width:110px;background:var(--card);border:1px solid rgba(245,166,35,.4);
+  border-radius:12px;padding:10px 16px;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:20px;font-weight:800;color:var(--sun);text-align:center;outline:none;
+  transition:border-color .2s,box-shadow .2s}
+.math-input:focus{border-color:var(--sun);box-shadow:0 0 0 3px rgba(245,166,35,.15)}
+.math-input::-webkit-inner-spin-button,.math-input::-webkit-outer-spin-button{-webkit-appearance:none}
+.math-extra{margin-top:20px;font-size:14px;color:var(--text-3);text-align:center;line-height:1.6}
+.math-extra strong{color:var(--text-2)}
 .math-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px}
 .mcard{background:var(--card);border:1px solid var(--border);
   border-radius:var(--r-lg);padding:28px}
@@ -262,22 +272,24 @@ nav{position:relative;z-index:10;display:flex;align-items:center;justify-content
 
 /* ─── PRICING ────────────────────────────────────────────── */
 .pricing-hdr{text-align:center;margin-bottom:40px}
-.pricing-wrap{max-width:660px;margin:0 auto}
+.pricing-wrap{max-width:660px;margin:0 auto;width:100%}
+.pplan{display:block;width:100%}
+.pplan .pcard{width:100%;box-sizing:border-box}
 .pcard{background:var(--card);border:1px solid var(--border);
   border-radius:var(--r-xl);overflow:hidden;
   box-shadow:0 32px 80px rgba(0,0,0,.35);position:relative}
 .pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,var(--sun),var(--orange))}
-.ptop{padding:32px;display:flex;align-items:flex-start;
+.ptop{padding:32px;display:flex;align-items:flex-end;
   justify-content:space-between;flex-wrap:wrap;gap:20px;
   border-bottom:1px solid var(--border)}
 .pname{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800}
-.psub{font-size:13px;color:var(--text-3);margin-top:6px;max-width:280px;line-height:1.5}
+.psub{font-size:13px;color:var(--text-3);margin-top:6px;max-width:350px;line-height:1.6}
 .pamt{text-align:right;flex-shrink:0}
 .pnum{font-family:'Plus Jakarta Sans',sans-serif;font-size:48px;font-weight:800;
   background:linear-gradient(135deg,var(--sun-bright),var(--orange));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;line-height:1}
+  background-clip:text;line-height:1;padding-bottom:10px}
 .pper{font-size:12px;color:var(--text-3);margin-top:4px}
 .pfeatures{padding:28px 32px;border-bottom:1px solid var(--border)}
 .ftitle{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
@@ -397,6 +409,46 @@ footer{border-top:1px solid var(--border);max-width:var(--max);
   .logos{padding:0 20px 60px}
   footer{flex-direction:column;align-items:flex-start;gap:12px}
 }
+
+/* ── PRICING TABS ──────────────────────────────────────────── */
+.ptabs {
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; margin: 0 auto 36px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 5px;
+  width: fit-content;
+}
+.ptab {
+  padding: 9px 24px; border-radius: 100px; border: none; cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 700;
+  transition: all 0.25s ease; background: none; color: var(--text-3);
+  white-space: nowrap;
+}
+.ptab.active {
+  background: linear-gradient(135deg, var(--sun), var(--orange));
+  color: #fff; box-shadow: 0 4px 16px rgba(245,166,35,.35);
+}
+.ptab:not(.active):hover { color: var(--text); background: rgba(255,255,255,0.06); }
+.pplan { display: none; }
+.pplan.active { display: block; }
+/* Managed badge */
+.managed-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: 100px;
+  background: rgba(6,214,160,0.1); border: 1px solid rgba(6,214,160,0.25);
+  font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 14px;
+}
+.managed-badge span { width:6px;height:6px;border-radius:50%;background:var(--green);animation:epulse 1.8s ease-in-out infinite; }
+/* Monthly price display */
+.pnum-mo { font-family:'Plus Jakarta Sans',sans-serif; font-size:48px; font-weight:800;
+  background:linear-gradient(135deg,var(--sun),var(--orange));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent; line-height:1; padding-bottom:10px; }
+.pper-mo { font-size:12px; color:var(--text-3); margin-top:4px; }
+.pper-mo strong { color: var(--text-2); }
+
 </style>
 </head>
 <body>
@@ -548,9 +600,13 @@ footer{border-top:1px solid var(--border);max-width:var(--max);
           <h3>Stage 3: They Give You Their Contact — Willingly</h3>
           <p>To unlock the full financing breakdown, they enter their name, email, and phone. By this point, they've already seen that solar works for their home. They're not handing over their info reluctantly — they're asking for the details.</p>
         </div>
-        <div class="sresult">
-          <span style="font-size:22px;flex-shrink:0">🎯</span>
-          <span><strong>The Result:</strong> They got real value first. You got a high-intent lead. Your CRM gets a notification the moment they unlock. Nobody felt tricked — and that's exactly why it converts.</span>
+        <div class="sresult" style="flex-direction:column;align-items:flex-start;gap:12px">
+          <p style="font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin:0">The Result</p>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:12px;font-size:15px;color:var(--text)"><span style="font-size:20px;flex-shrink:0">🎯</span><span><strong>They got value.</strong> You got a lead.</span></div>
+            <div style="display:flex;align-items:center;gap:12px;font-size:15px;color:var(--text)"><span style="font-size:20px;flex-shrink:0">📧</span><span><strong>You get notified the moment they unlock</strong> — while they're still on your site.</span></div>
+            <div style="display:flex;align-items:center;gap:12px;font-size:15px;color:var(--text)"><span style="font-size:20px;flex-shrink:0">🤝</span><span><strong>Nobody felt tricked.</strong> That's exactly why it converts.</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -562,20 +618,26 @@ footer{border-top:1px solid var(--border);max-width:var(--max);
 <!-- MATH -->
 <div class="wrap">
   <p class="sec-lbl reveal">The Math</p>
-  <h2 class="sec-h2 reveal">If you're getting 300 visitors/month to your site:</h2>
+  <h2 class="sec-h2 reveal">See it with <span class="hl-sun">your own numbers.</span></h2>
+  <div class="math-input-wrap reveal">
+    <span class="math-input-label">My site gets</span>
+    <input class="math-input" type="number" id="mathVisitors" value="300" min="1" max="99999" oninput="updateMath()">
+    <span class="math-input-label">visitors / month</span>
+  </div>
   <div class="math-grid">
     <div class="mcard reveal">
       <p class="mlbl">With a Contact Form</p>
-      <p class="meq">300 visitors × 2% conversion</p>
-      <p class="mres">= 6 leads / month</p>
+      <p class="meq" id="mathEqOld"><span id="mathV1">300</span> visitors × 2% conversion</p>
+      <p class="mres" id="mathResOld">= 6 leads / month</p>
     </div>
     <div class="mcard good reveal">
       <p class="mlbl">With The Tool</p>
-      <p class="meq">300 visitors × 6% conversion</p>
-      <p class="mres">= 18 leads / month</p>
+      <p class="meq" id="mathEqNew"><span id="mathV2">300</span> visitors × 6% conversion</p>
+      <p class="mres" id="mathResNew">= 18 leads / month</p>
     </div>
   </div>
-  <div class="mhl reveal">That's <strong>12 extra appointments per month</strong> — from traffic you're already paying for.</div>
+  <div class="mhl reveal" id="mathExtra">That's <strong id="mathDiff">12 extra appointments per month</strong> — from traffic you're already paying for.</div>
+  <p class="math-extra reveal">Based on industry averages: contact forms convert at ~2%, interactive tools at ~6%.<br><strong>Your actual results may be higher.</strong></p>
 </div>
 
 <div class="divider"></div>
@@ -584,46 +646,95 @@ footer{border-top:1px solid var(--border);max-width:var(--max);
 <div class="wrap" id="pricing">
   <div class="pricing-hdr reveal">
     <img src="https://cdn.prod.website-files.com/696becd0f7e2abec4f429ee4/69796020eb80698d2ce68c9a_goal.png" alt="" style="height:48px;margin:0 auto 16px;display:block;filter:drop-shadow(0 0 16px rgba(245,166,35,.4))">
-    <p class="sec-lbl" style="text-align:center">One Tool. One Price.</p>
-    <h2 class="sec-h2" style="text-align:center;margin-top:8px">Everything included.<br>No monthly fees. No surprises.</h2>
+    <p class="sec-lbl" style="text-align:center">Simple Pricing.</p>
+    <h2 class="sec-h2" style="text-align:center;margin-top:8px">Pick the plan that<br>works for <span class="hl-sun">your business.</span></h2>
   </div>
+
+  <!-- Tab switcher -->
+  <div class="ptabs reveal">
+    <button class="ptab active" onclick="switchPlan('onetime', this)">⭐ Own It — $497</button>
+    <button class="ptab" onclick="switchPlan('managed', this)">Managed — $49/mo</button>
+  </div>
+
   <div class="pricing-wrap">
-    <div class="pcard reveal">
-      <div class="ptop">
-        <div>
-          <div class="pname">The Mega Solar Tool</div>
-          <div class="psub">Turn your website into your hardest-working sales rep. Installed, branded, and connected to your CRM in 1 week.</div>
+
+    <!-- ── ONE-TIME PLAN ── -->
+    <div class="pplan active" id="plan-onetime">
+      <div class="pcard reveal">
+        <div class="ptop">
+          <div>
+            <div style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.3);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sun);margin-bottom:14px;">⭐ Self-Hosted</div>
+            <div class="pname">Own It Forever</div>
+            <div class="psub">One payment. Yours to keep. The highest-converting lead tool in solar — branded to your site and live in 1 week.</div>
+          </div>
+          <div class="pamt">
+            <div class="pnum">$497</div>
+            <div class="pper">One-time · Own it forever</div>
+          </div>
         </div>
-        <div class="pamt">
-          <div class="pnum">$497</div>
-          <div class="pper">One-Time Payment</div>
+        <div class="pfeatures">
+          <p class="ftitle">Everything Included</p>
+          <ul class="flist">
+            <li class="fitem"><div class="fcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Branding Customization:</strong> Custom-styled to match your logo, colors, and fonts — looks completely native to your site.</span></li>
+            <li class="fitem"><div class="fcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Google Maps Integration:</strong> Satellite roof views so homeowners can see their own roof as they calculate.</span></li>
+            <li class="fitem"><div class="fcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Instant Email Alerts:</strong> The moment someone completes their estimate, you get an email with their full details — while they're still on your site.</span></li>
+            <li class="fitem"><div class="fcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Automatic Lead Capture:</strong> Every lead is logged automatically — name, address, bill amount, and estimate results — organised and ready for your follow-up.</span></li>
+            <li class="fitem"><div class="fcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Zero Monthly Fees — Ever:</strong> Pay once, own it forever. Every lead it captures is pure profit with no ongoing cost to you.</span></li>
+          </ul>
         </div>
-      </div>
-      <div class="pfeatures">
-        <p class="ftitle">Everything Included</p>
-        <ul class="flist">
-          <li class="fitem"><div class="fcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Mega Solar Tool:</strong> The exact high-converting engine from the <a href="estimate.html" target="_blank" style="color:var(--sun)">demo</a>.</span></li>
-          <li class="fitem"><div class="fcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>State Customization:</strong> AI-local utility rates and state tax credits — accurate for every US state automatically.</span></li>
-          <li class="fitem"><div class="fcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Google Maps Integration:</strong> Satellite roof views so homeowners can see their home as they calculate.</span></li>
-          <li class="fitem"><div class="fcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>On-Site Installation:</strong> I personally install it on your existing platform — WordPress, Webflow, Wix, HighLevel, Squarespace.</span></li>
-          <li class="fitem"><div class="fcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Branding Customization:</strong> Custom-styled to match your logo, colors, and fonts.</span></li>
-          <li class="fitem"><div class="fcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>CRM Automation:</strong> Leads route instantly to GoHighLevel, HubSpot, Salesforce, or any CRM with webhooks.</span></li>
-          <li class="fitem"><div class="fcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Instant Lead Alerts:</strong> Get notified the second someone unlocks their financing report — while they're still on your site.</span></li>
-          <li class="fitem"><div class="fcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Custom Fields:</strong> Collect the specific data points your sales team needs to close faster.</span></li>
-          <li class="fitem"><div class="fcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Total Ownership:</strong> No monthly fees. You own the tool and 100% of your leads forever.</span></li>
-        </ul>
-      </div>
-      <div class="pfooter">
-        <p class="ptimeline">Timeline: <strong>1 Week</strong> <span>(Total time required from you: just a 30-minute kickoff call)</span></p>
-        <div style="margin-top:22px;display:flex;flex-direction:column;gap:14px">
-          <p style="font-size:14px;color:var(--text-2);line-height:1.65">No tiers. No confusion. You've seen the demo — you know it works. Now I install it, brand it, and connect it to your CRM. Done in a week.</p>
-          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px">
-            <a href="https://calendly.com/palashrajput/30min/" target="_blank" class="btn-p">Get Started →</a>
-            <a href="estimate.html" target="_blank" class="btn-s" style="font-size:13px">Try the demo first</a>
+        <div class="pfooter">
+          <p class="ptimeline">Timeline: <strong>1 Week</strong> <span>(Total time required from you: just a 30-minute kickoff call)</span></p>
+          <div style="margin-top:22px;display:flex;flex-direction:column;gap:14px">
+            <p style="font-size:14px;color:var(--text-2);line-height:1.65">You've seen the demo — you know exactly what you're getting. I install it, brand it to your site, and wire up your lead alerts. Done in a week. One payment, no surprises, no subscriptions. Ever.</p>
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px">
+              <a href="https://calendly.com/palashrajput/30min/" target="_blank" class="btn-p">Get Started →</a>
+              <a href="estimate.html" target="_blank" class="btn-s" style="font-size:13px">Try the demo first</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- ── MANAGED PLAN ── -->
+    <div class="pplan" id="plan-managed">
+      <div class="pcard reveal" style="border-color:rgba(6,214,160,0.3)">
+        <div class="ptop">
+          <div>
+            <div class="managed-badge"><span></span>Fully Managed</div>
+            <div class="pname">Done For You</div>
+            <div class="psub">Everything runs on our servers. Zero technical setup on your end — you just get the leads.</div>
+          </div>
+          <div class="pamt">
+            <div class="pnum-mo">$49</div>
+            <div class="pper-mo">per month · <strong>cancel anytime</strong></div>
+            <div style="margin-top:10px;font-size:12px;color:var(--text-3)">+ <strong style="color:var(--text-2)">$100</strong> one-time setup fee</div>
+          </div>
+        </div>
+        <div class="pfeatures">
+          <p class="ftitle">Everything Included</p>
+          <ul class="flist">
+            <li class="fitem"><div class="fcheck" style="background:rgba(6,214,160,0.15);border-color:rgba(6,214,160,0.3)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#06D6A0" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Zero Setup Required:</strong> Everything runs on our servers — you never touch a config, account, or setting.</span></li>
+            <li class="fitem"><div class="fcheck" style="background:rgba(6,214,160,0.15);border-color:rgba(6,214,160,0.3)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#06D6A0" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>All Costs Covered:</strong> $49/month is all you pay — hosting, AI, and everything in between. No hidden fees, no surprise bills.</span></li>
+            <li class="fitem"><div class="fcheck" style="background:rgba(6,214,160,0.15);border-color:rgba(6,214,160,0.3)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#06D6A0" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Branding Customization:</strong> Custom-styled to match your logo, colors, and fonts — looks completely native to your site.</span></li>
+            <li class="fitem"><div class="fcheck" style="background:rgba(6,214,160,0.15);border-color:rgba(6,214,160,0.3)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#06D6A0" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Google Maps Integration:</strong> Satellite roof views so homeowners can see their own roof as they calculate.</span></li>
+            <li class="fitem"><div class="fcheck" style="background:rgba(6,214,160,0.15);border-color:rgba(6,214,160,0.3)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#06D6A0" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Instant Email Alerts:</strong> The moment someone completes their estimate, you get an email with their full details — while they're still on your site.</span></li>
+            <li class="fitem"><div class="fcheck" style="background:rgba(6,214,160,0.15);border-color:rgba(6,214,160,0.3)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#06D6A0" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Automatic Lead Capture:</strong> Every lead is logged automatically — name, address, bill amount, and estimate results — organised and ready for your follow-up.</span></li>
+            <li class="fitem"><div class="fcheck" style="background:rgba(6,214,160,0.15);border-color:rgba(6,214,160,0.3)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#06D6A0" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Cancel Anytime:</strong> No contracts, no lock-in. Stop whenever you want.</span></li>
+          </ul>
+        </div>
+        <div class="pfooter">
+          <p class="ptimeline">Timeline: <strong>1 Week</strong> <span>(Total time required from you: just a 30-minute kickoff call)</span></p>
+          <div style="margin-top:22px;display:flex;flex-direction:column;gap:14px">
+            <p style="font-size:14px;color:var(--text-2);line-height:1.65">Best for installers who want zero technical headaches. Everything runs on our servers — you just get the leads straight to your inbox. Flat $49/month, everything included, cancel whenever you want.</p>
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px">
+              <a href="https://calendly.com/palashrajput/30min/" target="_blank" class="btn-p" style="background:linear-gradient(135deg,#06D6A0,#0BA87E);box-shadow:0 8px 28px rgba(6,214,160,.3)">Get Started →</a>
+              <a href="estimate.html" target="_blank" class="btn-s" style="font-size:13px">Try the demo first</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -850,6 +961,32 @@ document.querySelectorAll('.reveal').forEach((el, i) => {
   setTimeout(updateSteps, 200);
   window.addEventListener('load', updateSteps);
 })();
+</script>
+
+<script>
+function switchPlan(plan, btn) {
+  // Update tabs
+  document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  // Update plans
+  document.querySelectorAll('.pplan').forEach(p => p.classList.remove('active'));
+  document.getElementById('plan-' + plan).classList.add('active');
+}
+</script>
+
+
+<script>
+function updateMath() {
+  var v = parseInt(document.getElementById('mathVisitors').value) || 0;
+  var old = Math.round(v * 0.02);
+  var neu = Math.round(v * 0.06);
+  var diff = neu - old;
+  document.getElementById('mathV1').textContent = v.toLocaleString();
+  document.getElementById('mathV2').textContent = v.toLocaleString();
+  document.getElementById('mathResOld').textContent = '= ' + old.toLocaleString() + ' leads / month';
+  document.getElementById('mathResNew').textContent = '= ' + neu.toLocaleString() + ' leads / month';
+  document.getElementById('mathDiff').textContent = diff.toLocaleString() + ' extra appointments per month';
+}
 </script>
 </body>
 </html>
